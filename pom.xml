@@ -1,0 +1,204 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>me.antoniocaccamo</groupId>
+    <artifactId>lab-swt</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+
+    <name>lab-swt</name>
+
+    <properties>
+        <java.version>17</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.build.timestamp.format>yyyyMMdd_HHmm</maven.build.timestamp.format>
+        <buildNumber>${maven.build.timestamp}</buildNumber>
+        <getdown.version>1.8.0</getdown.version>
+        <spring.version>5.1.7.RELEASE</spring.version>
+        <launch4j.fileVersion>2.2.5.1</launch4j.fileVersion>
+        <lombok.version>1.18.30</lombok.version>
+        <!-- swt -->
+        <swt.version>3.125.0</swt.version>
+        <org.eclipse.jface.version>3.32.0</org.eclipse.jface.version>
+
+        <jetty.version>11.0.7</jetty.version>
+
+        <vlcj.version>4.4.4</vlcj.version>
+
+        <micronaut.version>3.10.4</micronaut.version>
+
+
+        <exec.mainClass>lab.swt.MainApplication</exec.mainClass>
+        <a.file>/Users/antonio.caccamo/Movies/Magic - 110548.mp4</a.file>
+
+
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- https://mvnrepository.com/artifact/io.micronaut.platform/micronaut-platform -->
+            <dependency>
+                <groupId>io.micronaut.platform</groupId>
+                <artifactId>micronaut-platform</artifactId>
+                <version>4.3.7</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+
+    <dependencies>
+
+        <dependency>
+            <groupId>io.micronaut</groupId>
+            <artifactId>micronaut-context</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.micronaut</groupId>
+            <artifactId>micronaut-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.micronaut</groupId>
+            <artifactId>micronaut-inject</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>io.micronaut.picocli</groupId>
+            <artifactId>micronaut-picocli</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.micronaut</groupId>
+            <artifactId>micronaut-http</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>io.micronaut</groupId>
+            <artifactId>micronaut-inject-java</artifactId>
+        </dependency>
+
+
+        <!-- durian swt -->
+        <dependency>
+            <groupId>com.diffplug.durian</groupId>
+            <artifactId>durian-core</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.diffplug.durian</groupId>
+            <artifactId>durian-concurrent</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.diffplug.durian</groupId>
+            <artifactId>durian-collect</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.diffplug.durian</groupId>
+            <artifactId>durian-rx</artifactId>
+            <version>4.0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.diffplug.durian</groupId>
+            <artifactId>durian-swt</artifactId>
+            <version>4.3.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.eclipse.platform</groupId>
+            <artifactId>org.eclipse.jface</artifactId>
+            <version>${org.eclipse.jface.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.4.14</version>
+        </dependency>
+
+
+    </dependencies>
+
+
+    <profiles>
+
+        <profile>
+            <id>mac</id>
+            <activation>
+                <os>
+                    <name>mac os x</name>
+                </os>
+            </activation>
+
+            <properties>
+                <org.eclipse.swt.cocoa.macosx.x86_64.version>3.125.0</org.eclipse.swt.cocoa.macosx.x86_64.version>
+            </properties>
+
+            <dependencies>
+
+                <dependency>
+                    <groupId>org.eclipse.platform</groupId>
+                    <artifactId>org.eclipse.swt.cocoa.macosx.x86_64</artifactId>
+                    <version>${org.eclipse.swt.cocoa.macosx.x86_64.version}</version>
+                </dependency>
+
+            </dependencies>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>3.0.0</version>
+                        <configuration>
+                            <executable>java</executable>
+                            <arguments>
+                                <!--
+                                <argument>-Djava.library.path=${lib.directory}</argument>
+                                <argument>-Dorg.eclipse.swt.browser.DefaultType=edge</argument>
+                                -->
+                                <argument>-XstartOnFirstThread</argument>
+                                <argument>-classpath</argument>
+                                <!-- automatically creates the classpath using all project dependencies,
+                                    also adding the project build directory -->
+                                <classpath />
+                                <argument>${exec.mainClass}</argument>
+                                <argument>${a.file}</argument>
+                            </arguments>
+                            <systemProperties>
+                                <systemProperty>
+                                    <key>NO_CHECK</key>
+                                    <value>X</value>
+                                </systemProperty>
+                            </systemProperties>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+
+        </profile>
+
+    </profiles>
+</project>
